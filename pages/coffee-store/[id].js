@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { fetchCoffeeStores } from "@lib/coffee-stores";
 import { StoreContext } from "@store/store-context";
 import styles from "@styles/coffee-store.module.css";
@@ -66,7 +67,7 @@ const CoffeeStore = (initialProps) => {
         }
       }
     }
-  }, [id, initialProps, initialProps.coffeeStore]);
+  }, [id, initialProps, initialProps.coffeeStore, coffeeStores]);
 
   const { address, name, imgUrl } = coffeeStore;
 
