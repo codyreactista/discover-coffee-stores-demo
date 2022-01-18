@@ -58,6 +58,9 @@ export default function Home(props) {
     handleTrackLocation();
   };
 
+  console.log("coffeeStores", coffeeStores);
+  console.log("props.coffeeStores", props.coffeeStores);
+
   return (
     <div className={styles.container}>
       <Head>
