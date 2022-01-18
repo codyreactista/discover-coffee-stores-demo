@@ -15,7 +15,7 @@ export async function getStaticProps(staticProps) {
 
   const coffeeStores = await fetchCoffeeStores();
   const findCoffeeStoreById = coffeeStores.find((coffeeStore) => {
-    return coffeeStore.id.toString() === params.id;
+    return coffeeStore.id.toString() === params.id; //dynamic id
   });
 
   return {
@@ -56,6 +56,33 @@ const CoffeeStore = (initialProps) => {
   } = useContext(StoreContext);
 
   useEffect(() => {
+    const handleCreateCoffeeStore = async (coffeeStore) => {
+      try {
+        const { id, name, voting, imgUrl, address } = coffeeStore;
+        const response = await fetch("/api/createCoffeeStore", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id,
+            name,
+            voting: 0,
+            imgUrl,
+            address: address || "",
+          }),
+        });
+
+        const dbCoffeeStore = response.json();
+        console.log(
+          "🚀 ~ file: [id].js ~ line 76 ~ handleCreateCoffeeStore ~ dbCoffeeStore",
+          dbCoffeeStore
+        );
+      } catch (err) {
+        console.error("Error creating coffee store", err);
+      }
+    };
+
     if (isEmpty(initialProps.coffeeStore)) {
       if (coffeeStores.length > 0) {
         const coffeeStoreFromContext = coffeeStores.find((coffeeStore) => {
@@ -64,8 +91,12 @@ const CoffeeStore = (initialProps) => {
 
         if (coffeeStoreFromContext) {
           setCoffeeStore(coffeeStoreFromContext);
+          handleCreateCoffeeStore(coffeeStoreFromContext);
         }
       }
+    } else {
+      // SSG
+      handleCreateCoffeeStore(initialProps.coffeeStore);
     }
   }, [id, initialProps, initialProps.coffeeStore, coffeeStores]);
 
@@ -104,11 +135,21 @@ const CoffeeStore = (initialProps) => {
 
         <div className={cls("glass", styles.col2)}>
           <div className={styles.iconWrapper}>
-            <Image src="/static/icons/place.svg" width="24" height="24" />
+            <Image
+              src="/static/icons/place.svg"
+              width="24"
+              height="24"
+              alt="Place icon"
+            />
             <p className={styles.text}>{address}</p>
           </div>
           <div className={styles.iconWrapper}>
-            <Image src="/static/icons/star.svg" width="24" height="24" />
+            <Image
+              src="/static/icons/star.svg"
+              width="24"
+              height="24"
+              alt="Star icon"
+            />
             <p className={styles.text}>1</p>
           </div>
 
