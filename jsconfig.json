@@ -5,7 +5,8 @@
       "@components/*": ["components/*"],
       "@styles/*": ["styles/*"],
       "@lib/*": ["lib/*"],
-      "@data/*": ["data/*"]
+      "@data/*": ["data/*"],
+      "@store/*": ["store/*"]
     }
   }
 }
