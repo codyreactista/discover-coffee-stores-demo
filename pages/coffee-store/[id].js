@@ -8,7 +8,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
+import useSWR from "swr";
 import { isEmpty } from "utils";
+
+const fetcher = (url) => fetch(url).then((res) => res.json());
 
 export async function getStaticProps(staticProps) {
   const params = staticProps.params;
@@ -58,7 +61,7 @@ const CoffeeStore = (initialProps) => {
   useEffect(() => {
     const handleCreateCoffeeStore = async (coffeeStore) => {
       try {
-        const { id, name, voting, imgUrl, address } = coffeeStore;
+        const { id, name, imgUrl, address } = coffeeStore;
         const response = await fetch("/api/createCoffeeStore", {
           method: "POST",
           headers: {
@@ -73,11 +76,7 @@ const CoffeeStore = (initialProps) => {
           }),
         });
 
-        const dbCoffeeStore = response.json();
-        console.log(
-          "🚀 ~ file: [id].js ~ line 76 ~ handleCreateCoffeeStore ~ dbCoffeeStore",
-          dbCoffeeStore
-        );
+        const dbCoffeeStore = await response.json();
       } catch (err) {
         console.error("Error creating coffee store", err);
       }
@@ -102,14 +101,50 @@ const CoffeeStore = (initialProps) => {
 
   const { address, name, imgUrl } = coffeeStore;
 
-  const handleUpvoteButton = () => {
-    console.log("handle upvote");
+  const [votingCount, setVotingCount] = useState(0);
+
+  const { data, error } = useSWR(`/api/getCoffeeStoreById?id=${id}`, fetcher);
+
+  useEffect(() => {
+    if (data && data.length > 0) {
+      setCoffeeStore(data[0]);
+
+      setVotingCount(data[0].voting);
+    }
+  }, [data]);
+
+  const handleUpvoteButton = async () => {
+    try {
+      const response = await fetch("/api/favouriteCoffeeStoreById", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id,
+        }),
+      });
+
+      const dbCoffeeStore = await response.json();
+
+      if (dbCoffeeStore && dbCoffeeStore.length > 0) {
+        let count = votingCount + 1;
+        setVotingCount(count);
+      }
+    } catch (err) {
+      console.error("Error upvoting the coffee store", err);
+    }
   };
+
+  if (error) {
+    return <div>Something went wrong retrieving coffee store page</div>;
+  }
 
   return (
     <div className={styles.layout}>
       <Head>
         <title>{name}</title>
+        <meta name="description" content={`${name} coffee store`}></meta>
       </Head>
       <div className={styles.container}>
         <div className={styles.col1}>
@@ -129,7 +164,7 @@ const CoffeeStore = (initialProps) => {
             width={600}
             height={360}
             className={styles.storeImg}
-            alt={name}
+            alt="banner image"
           />
         </div>
 
@@ -139,7 +174,7 @@ const CoffeeStore = (initialProps) => {
               src="/static/icons/place.svg"
               width="24"
               height="24"
-              alt="Place icon"
+              alt="place icon"
             />
             <p className={styles.text}>{address}</p>
           </div>
@@ -148,9 +183,9 @@ const CoffeeStore = (initialProps) => {
               src="/static/icons/star.svg"
               width="24"
               height="24"
-              alt="Star icon"
+              alt="star icon"
             />
-            <p className={styles.text}>1</p>
+            <p className={styles.text}>{votingCount}</p>
           </div>
 
           <button className={styles.upvoteButton} onClick={handleUpvoteButton}>
