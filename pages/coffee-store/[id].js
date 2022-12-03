@@ -150,7 +150,7 @@ const CoffeeStore = (initialProps) => {
         <div className={styles.col1}>
           <div className={styles.backToHomeLink}>
             <Link href="/">
-              <a>← Back to home</a>
+              ← Back to home
             </Link>
           </div>
           <div className={styles.nameWrapper}>

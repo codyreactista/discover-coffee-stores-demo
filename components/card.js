@@ -5,27 +5,27 @@ import styles from "./card.module.css";
 
 const Card = (props) => {
   return (
-    <Link href={props.href}>
-      <a className={styles.cardLink}>
-        <div className={cls("glass", styles.container)}>
-          <div className={styles.cardHeaderWrapper}>
-            <h2 className={styles.cardHeader}>{props.name}</h2>
-          </div>
-          <div className={styles.cardImageWrapper}>
-            <Image
-              alt={props.name}
-              className={styles.cardImage}
-              src={props.imgUrl}
-              width={260}
-              height={160}
-              style={{
-                maxWidth: "100%",
-                height: "auto"
-              }} />
-          </div>
+    (<Link href={props.href} className={styles.cardLink}>
+
+      <div className={cls("glass", styles.container)}>
+        <div className={styles.cardHeaderWrapper}>
+          <h2 className={styles.cardHeader}>{props.name}</h2>
         </div>
-      </a>
-    </Link>
+        <div className={styles.cardImageWrapper}>
+          <Image
+            alt={props.name}
+            className={styles.cardImage}
+            src={props.imgUrl}
+            width={260}
+            height={160}
+            style={{
+              maxWidth: "100%",
+              height: "auto"
+            }} />
+        </div>
+      </div>
+
+    </Link>)
   );
 };
 
