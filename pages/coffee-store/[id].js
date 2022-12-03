@@ -4,7 +4,7 @@ import { StoreContext } from "@store/store-context";
 import styles from "@styles/coffee-store.module.css";
 import cls from "classnames";
 import Head from "next/head";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
