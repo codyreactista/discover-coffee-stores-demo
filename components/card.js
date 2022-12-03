@@ -1,5 +1,5 @@
 import cls from "classnames";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import Link from "next/link";
 import styles from "./card.module.css";
 
@@ -18,7 +18,10 @@ const Card = (props) => {
               src={props.imgUrl}
               width={260}
               height={160}
-            />
+              style={{
+                maxWidth: "100%",
+                height: "auto"
+              }} />
           </div>
         </div>
       </a>

@@ -4,7 +4,7 @@ import { StoreContext } from "@store/store-context";
 import styles from "@styles/coffee-store.module.css";
 import cls from "classnames";
 import Head from "next/head";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
@@ -165,7 +165,10 @@ const CoffeeStore = (initialProps) => {
             height={360}
             className={styles.storeImg}
             alt="banner image"
-          />
+            style={{
+              maxWidth: "100%",
+              height: "auto"
+            }} />
         </div>
 
         <div className={cls("glass", styles.col2)}>
@@ -175,7 +178,10 @@ const CoffeeStore = (initialProps) => {
               width="24"
               height="24"
               alt="place icon"
-            />
+              style={{
+                maxWidth: "100%",
+                height: "auto"
+              }} />
             <p className={styles.text}>{address}</p>
           </div>
           <div className={styles.iconWrapper}>
@@ -184,7 +190,10 @@ const CoffeeStore = (initialProps) => {
               width="24"
               height="24"
               alt="star icon"
-            />
+              style={{
+                maxWidth: "100%",
+                height: "auto"
+              }} />
             <p className={styles.text}>{votingCount}</p>
           </div>
 

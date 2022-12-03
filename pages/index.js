@@ -5,7 +5,7 @@ import { ACTION_TYPES, StoreContext } from "@store/store-context";
 import styles from "@styles/Home.module.css";
 import useTrackLocation from "hooks/use-track-location";
 import Head from "next/head";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
 
 export async function getStaticProps(context) {
@@ -83,7 +83,10 @@ export default function Home(props) {
             width={700}
             height={400}
             alt="hero image"
-          />
+            style={{
+              maxWidth: "100%",
+              height: "auto"
+            }} />
         </div>
 
         {coffeeStores.length > 0 && (
