@@ -149,9 +149,7 @@ const CoffeeStore = (initialProps) => {
       <div className={styles.container}>
         <div className={styles.col1}>
           <div className={styles.backToHomeLink}>
-            <Link href="/">
-              ← Back to home
-            </Link>
+            <Link href="/">← Back to home</Link>
           </div>
           <div className={styles.nameWrapper}>
             <h1 className={styles.name}>{name}</h1>
@@ -165,10 +163,7 @@ const CoffeeStore = (initialProps) => {
             height={360}
             className={styles.storeImg}
             alt="banner image"
-            style={{
-              maxWidth: "100%",
-              height: "auto"
-            }} />
+          />
         </div>
 
         <div className={cls("glass", styles.col2)}>
@@ -178,10 +173,7 @@ const CoffeeStore = (initialProps) => {
               width="24"
               height="24"
               alt="place icon"
-              style={{
-                maxWidth: "100%",
-                height: "auto"
-              }} />
+            />
             <p className={styles.text}>{address}</p>
           </div>
           <div className={styles.iconWrapper}>
@@ -190,10 +182,7 @@ const CoffeeStore = (initialProps) => {
               width="24"
               height="24"
               alt="star icon"
-              style={{
-                maxWidth: "100%",
-                height: "auto"
-              }} />
+            />
             <p className={styles.text}>{votingCount}</p>
           </div>
 

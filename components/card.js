@@ -5,8 +5,7 @@ import styles from "./card.module.css";
 
 const Card = (props) => {
   return (
-    (<Link href={props.href} className={styles.cardLink}>
-
+    <Link href={props.href} className={styles.cardLink}>
       <div className={cls("glass", styles.container)}>
         <div className={styles.cardHeaderWrapper}>
           <h2 className={styles.cardHeader}>{props.name}</h2>
@@ -18,14 +17,10 @@ const Card = (props) => {
             src={props.imgUrl}
             width={260}
             height={160}
-            style={{
-              maxWidth: "100%",
-              height: "auto"
-            }} />
+          />
         </div>
       </div>
-
-    </Link>)
+    </Link>
   );
 };
 
