@@ -1,4 +1,4 @@
-import { findRecordByFilter, getMinifiedRecords, table } from "@lib/airtable";
+import { findRecordByFilter, getMinifiedRecords, table } from "@/lib/airtable";
 
 const favouriteCoffeeStoreById = async (req, res) => {
   if (req.method === "PUT") {

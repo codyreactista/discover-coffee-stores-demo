@@ -1,7 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { fetchCoffeeStores } from "@lib/coffee-stores";
-import { StoreContext } from "@store/store-context";
-import styles from "@styles/coffee-store.module.css";
+
 import cls from "classnames";
 import Head from "next/head";
 import Image from "next/image";
@@ -9,7 +7,11 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import useSWR from "swr";
-import { isEmpty } from "utils";
+
+import { fetchCoffeeStores } from "@/lib/coffee-stores";
+import { StoreContext } from "@/store/store-context";
+import styles from "@/styles/coffee-store.module.css";
+import { isEmpty } from "@/utils/index";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 

@@ -1,12 +1,13 @@
-import Banner from "@components/banner";
-import Card from "@components/card";
-import { fetchCoffeeStores } from "@lib/coffee-stores";
-import { ACTION_TYPES, StoreContext } from "@store/store-context";
-import styles from "@styles/Home.module.css";
-import useTrackLocation from "hooks/use-track-location";
 import Head from "next/head";
 import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
+
+import Banner from "@/components/banner";
+import Card from "@/components/card";
+import useTrackLocation from "@/hooks/use-track-location";
+import { fetchCoffeeStores } from "@/lib/coffee-stores";
+import { ACTION_TYPES, StoreContext } from "@/store/store-context";
+import styles from "@/styles/Home.module.css";
 
 export async function getStaticProps(context) {
   const coffeeStores = await fetchCoffeeStores();

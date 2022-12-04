@@ -1,7 +1,7 @@
 import localFont from "@next/font/local";
 
-import StoreProvider from "@store/store-context";
-import "@styles/globals.css";
+import StoreProvider from "@/store/store-context";
+import "@/styles/globals.css";
 
 const IBMPlexSans = localFont({
   src: [
