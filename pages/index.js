@@ -8,6 +8,7 @@ import useTrackLocation from "@/hooks/use-track-location";
 import { fetchCoffeeStores } from "@/lib/coffee-stores";
 import { ACTION_TYPES, StoreContext } from "@/store/store-context";
 import styles from "@/styles/Home.module.css";
+import heroImage from "public/static/hero-image.png";
 
 export async function getStaticProps(context) {
   const coffeeStores = await fetchCoffeeStores();
@@ -64,11 +65,10 @@ export default function Home(props) {
       <Head>
         <title>Coffee Connoisseur</title>
         <link rel="icon" href="/favicon.ico" />
-
         <meta
           name="description"
           content="allows you to discover coffee stores"
-        ></meta>
+        />
       </Head>
 
       <main className={styles.main}>
@@ -80,10 +80,11 @@ export default function Home(props) {
         {coffeeStoresError && <p>Something went wrong: {coffeeStoresError}</p>}
         <div className={styles.heroImage}>
           <Image
-            src="/static/hero-image.png"
+            src={heroImage}
             width={700}
             height={400}
             alt="hero image"
+            placeholder="blur"
           />
         </div>
 
