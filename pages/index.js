@@ -84,7 +84,7 @@ export default function Home(props) {
             width={700}
             height={400}
             alt="hero image"
-            placeholder="blur"
+            priority
           />
         </div>
 
