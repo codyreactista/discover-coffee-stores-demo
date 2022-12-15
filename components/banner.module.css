@@ -1,11 +1,13 @@
 /** By default, this is a mobile breakpoint **/
 .container {
-  margin-bottom: 1rem;
+  margin-bottom: 6rem;
+  position: relative;
+  z-index: 2;
 }
 
 .title {
   letter-spacing: -0.025em;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--text-black);
 
   font-size: 3rem /* 48px */;

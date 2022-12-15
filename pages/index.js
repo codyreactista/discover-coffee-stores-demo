@@ -1,14 +1,16 @@
-import Banner from "@components/banner";
-import Card from "@components/card";
-import { fetchCoffeeStores } from "@lib/coffee-stores";
-import { ACTION_TYPES, StoreContext } from "@store/store-context";
-import styles from "@styles/Home.module.css";
-import useTrackLocation from "hooks/use-track-location";
 import Head from "next/head";
 import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
 
-export async function getStaticProps(context) {
+import Banner from "@/components/banner";
+import Card from "@/components/card";
+import useTrackLocation from "@/hooks/use-track-location";
+import { fetchCoffeeStores } from "@/lib/coffee-stores";
+import { ACTION_TYPES, StoreContext } from "@/store/store-context";
+import styles from "@/styles/Home.module.css";
+import heroImage from "public/static/hero-image.png";
+
+export async function getStaticProps() {
   const coffeeStores = await fetchCoffeeStores();
 
   return {
@@ -45,7 +47,6 @@ export default function Home(props) {
             },
           });
           setCoffeeStoresError("");
-          //set coffee stores
         } catch (error) {
           //set error
           setCoffeeStoresError(error.message);
@@ -63,26 +64,26 @@ export default function Home(props) {
       <Head>
         <title>Coffee Connoisseur</title>
         <link rel="icon" href="/favicon.ico" />
-
         <meta
           name="description"
           content="allows you to discover coffee stores"
-        ></meta>
+        />
       </Head>
 
       <main className={styles.main}>
         <Banner
-          buttonText={isFindingLocation ? "Loading..." : "View stores nearby"}
+          buttonText={isFindingLocation ? "Locating..." : "View stores nearby"}
           handleOnClick={handleOnBannerBtnClick}
         />
         {locationErrorMsg && <p>Something went wrong: {locationErrorMsg}</p>}
         {coffeeStoresError && <p>Something went wrong: {coffeeStoresError}</p>}
         <div className={styles.heroImage}>
           <Image
-            src="/static/hero-image.png"
+            src={heroImage}
             width={700}
             height={400}
             alt="hero image"
+            priority
           />
         </div>
 
