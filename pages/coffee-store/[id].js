@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import cls from "classnames";
 import Head from "next/head";
 import Image from "next/image";
@@ -45,9 +44,6 @@ export async function getStaticPaths() {
 
 const CoffeeStore = (initialProps) => {
   const router = useRouter();
-  if (router.isFallback) {
-    return <div>Loading...</div>;
-  }
 
   const id = router.query.id;
 
@@ -110,6 +106,10 @@ const CoffeeStore = (initialProps) => {
       setVotingCount(data[0].voting);
     }
   }, [data]);
+
+  if (router.isFallback) {
+    return <div>Loading...</div>;
+  }
 
   const handleUpvoteButton = async () => {
     setIsUpvoting(true);
