@@ -47,9 +47,6 @@
     0 25px 50px -12px rgba(0, 0, 0, 0.25);
 
   border-radius: 0.75rem /* 12px */;
-  max-width: 100%;
-  height: auto;
-  vertical-align: middle;
   border-style: none;
 }
 
@@ -98,6 +95,10 @@
 
 .upvoteButton:hover {
   background-color: var(--text-purple);
+}
+
+.upvoteButton:disabled {
+  cursor: wait;
 }
 
 @media (min-width: 1024px) {

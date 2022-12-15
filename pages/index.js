@@ -10,7 +10,7 @@ import { ACTION_TYPES, StoreContext } from "@/store/store-context";
 import styles from "@/styles/Home.module.css";
 import heroImage from "public/static/hero-image.png";
 
-export async function getStaticProps(context) {
+export async function getStaticProps() {
   const coffeeStores = await fetchCoffeeStores();
 
   return {
@@ -47,7 +47,6 @@ export default function Home(props) {
             },
           });
           setCoffeeStoresError("");
-          //set coffee stores
         } catch (error) {
           //set error
           setCoffeeStoresError(error.message);
@@ -73,7 +72,7 @@ export default function Home(props) {
 
       <main className={styles.main}>
         <Banner
-          buttonText={isFindingLocation ? "Loading..." : "View stores nearby"}
+          buttonText={isFindingLocation ? "Locating..." : "View stores nearby"}
           handleOnClick={handleOnBannerBtnClick}
         />
         {locationErrorMsg && <p>Something went wrong: {locationErrorMsg}</p>}

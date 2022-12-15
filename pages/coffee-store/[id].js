@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-
 import cls from "classnames";
 import Head from "next/head";
 import Image from "next/image";
@@ -11,16 +10,14 @@ import useSWR from "swr";
 import { fetchCoffeeStores } from "@/lib/coffee-stores";
 import { StoreContext } from "@/store/store-context";
 import styles from "@/styles/coffee-store.module.css";
-import { isEmpty } from "@/utils/index";
-
-const fetcher = (url) => fetch(url).then((res) => res.json());
+import { fetcher, isEmpty } from "@/utils/index";
 
 export async function getStaticProps(staticProps) {
   const params = staticProps.params;
 
   const coffeeStores = await fetchCoffeeStores();
   const findCoffeeStoreById = coffeeStores.find((coffeeStore) => {
-    return coffeeStore.id.toString() === params.id; //dynamic id
+    return coffeeStore.id === params.id; //dynamic id
   });
 
   return {
@@ -35,7 +32,7 @@ export async function getStaticPaths() {
   const paths = coffeeStores.map((coffeeStore) => {
     return {
       params: {
-        id: coffeeStore.id.toString(),
+        id: coffeeStore.id,
       },
     };
   });
@@ -54,7 +51,9 @@ const CoffeeStore = (initialProps) => {
 
   const id = router.query.id;
 
-  const [coffeeStore, setCoffeeStore] = useState(initialProps.coffeeStore);
+  const [coffeeStore, setCoffeeStore] = useState(
+    initialProps.coffeeStore ?? {}
+  );
 
   const {
     state: { coffeeStores },
@@ -74,7 +73,7 @@ const CoffeeStore = (initialProps) => {
             name,
             voting: 0,
             imgUrl,
-            address: address || "",
+            address: address ?? undefined,
           }),
         });
 
@@ -87,38 +86,36 @@ const CoffeeStore = (initialProps) => {
     if (isEmpty(initialProps.coffeeStore)) {
       if (coffeeStores.length > 0) {
         const coffeeStoreFromContext = coffeeStores.find((coffeeStore) => {
-          return coffeeStore.id.toString() === id; //dynamic id
+          return coffeeStore.id === id; //dynamic id
         });
-
-        if (coffeeStoreFromContext) {
-          setCoffeeStore(coffeeStoreFromContext);
-          handleCreateCoffeeStore(coffeeStoreFromContext);
-        }
+        setCoffeeStore(coffeeStoreFromContext);
+        handleCreateCoffeeStore(coffeeStoreFromContext);
       }
     } else {
       // SSG
       handleCreateCoffeeStore(initialProps.coffeeStore);
     }
-  }, [id, initialProps, initialProps.coffeeStore, coffeeStores]);
+  }, [id, initialProps.coffeeStore, coffeeStores]);
 
-  const { address, name, imgUrl } = coffeeStore;
+  const { name = "", address = "", imgUrl = "" } = coffeeStore;
 
   const [votingCount, setVotingCount] = useState(0);
+  const [isUpvoting, setIsUpvoting] = useState(false);
 
   const { data, error } = useSWR(`/api/getCoffeeStoreById?id=${id}`, fetcher);
 
   useEffect(() => {
     if (data && data.length > 0) {
       setCoffeeStore(data[0]);
-
       setVotingCount(data[0].voting);
     }
   }, [data]);
 
   const handleUpvoteButton = async () => {
+    setIsUpvoting(true);
     try {
       const response = await fetch("/api/favouriteCoffeeStoreById", {
-        method: "PUT",
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
@@ -129,12 +126,14 @@ const CoffeeStore = (initialProps) => {
 
       const dbCoffeeStore = await response.json();
 
-      if (dbCoffeeStore && dbCoffeeStore.length > 0) {
+      if (dbCoffeeStore.id) {
         let count = votingCount + 1;
         setVotingCount(count);
+        setIsUpvoting(false);
       }
     } catch (err) {
       console.error("Error upvoting the coffee store", err);
+      setIsUpvoting(false);
     }
   };
 
@@ -148,6 +147,7 @@ const CoffeeStore = (initialProps) => {
         <title>{name}</title>
         <meta name="description" content={`${name} coffee store`}></meta>
       </Head>
+
       <div className={styles.container}>
         <div className={styles.col1}>
           <div className={styles.backToHomeLink}>
@@ -164,20 +164,22 @@ const CoffeeStore = (initialProps) => {
             width={600}
             height={360}
             className={styles.storeImg}
-            alt="banner image"
+            alt={name}
           />
         </div>
 
         <div className={cls("glass", styles.col2)}>
-          <div className={styles.iconWrapper}>
-            <Image
-              src="/static/icons/place.svg"
-              width="24"
-              height="24"
-              alt="place icon"
-            />
-            <p className={styles.text}>{address}</p>
-          </div>
+          {address && (
+            <div className={styles.iconWrapper}>
+              <Image
+                src="/static/icons/place.svg"
+                width="24"
+                height="24"
+                alt="place icon"
+              />
+              <p className={styles.text}>{address}</p>
+            </div>
+          )}
           <div className={styles.iconWrapper}>
             <Image
               src="/static/icons/star.svg"
@@ -188,8 +190,12 @@ const CoffeeStore = (initialProps) => {
             <p className={styles.text}>{votingCount}</p>
           </div>
 
-          <button className={styles.upvoteButton} onClick={handleUpvoteButton}>
-            Up vote!
+          <button
+            className={styles.upvoteButton}
+            onClick={handleUpvoteButton}
+            disabled={isUpvoting}
+          >
+            {isUpvoting ? "Upvoting..." : "Upvote"}
           </button>
         </div>
       </div>
